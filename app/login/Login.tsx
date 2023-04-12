@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { cookies } from "next/dist/client/components/headers";
+import { Label, TextInput, Button } from "flowbite-react";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -54,40 +55,39 @@ const Login = () => {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-start p-24">
-      <div>
-        <label htmlFor="username">Username</label>
-        <input
-          className="ml-2 dark:bg-white dark:text-black"
-          type="text"
-          id="username"
-          name="username"
-          placeholder="username"
-          onChange={(e) => handleInput(e)}
-        />
-      </div>
-      <div>
-        <label htmlFor="password">Password</label>
-        <input
-          className="ml-2 dark:bg-white dark:text-black"
-          type="password"
-          id="password"
-          name="password"
-          placeholder="password"
-          onChange={(e) => handleInput(e)}
-        />
-      </div>
-      <div>
-        <button
-          className=""
-          id="submit"
-          type="button"
-          onClick={() => jwtTokenHandler()}
-        >
-          Login
-        </button>
-      </div>
-      <div>
-        {errorMsg ? <div className="text-red-400">{errorMsg}</div> : <></>}
+      <div className="flex flex-col gap-4">
+        <div>
+          <div className="mb-2 block">
+            <Label htmlFor="username" color="white" value="Your username" />
+          </div>
+          <TextInput
+            type="text"
+            id="username"
+            name="username"
+            placeholder="username"
+            onChange={(e) => handleInput(e)}
+            required={true}
+          />
+        </div>
+        <div>
+          <div className="mb-2 block">
+            <Label htmlFor="password" color="white" value="Your password" />
+          </div>
+          <TextInput
+            type="password"
+            id="password"
+            name="password"
+            placeholder="password"
+            onChange={(e) => handleInput(e)}
+            required={true}
+          />
+        </div>
+        <Button type="button" onClick={() => jwtTokenHandler()}>
+          Register new account
+        </Button>
+        <div>
+          {errorMsg ? <div className="text-red-400">{errorMsg}</div> : <></>}
+        </div>
       </div>
     </main>
   );
