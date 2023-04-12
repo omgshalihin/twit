@@ -1,11 +1,13 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { cookies } from "next/dist/client/components/headers";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [token, setToken] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -22,12 +24,22 @@ const Login = () => {
         "Content-type": "application/json",
       },
     })
-      .then((response) => response.text())
-      .then((data) => {
-        setToken(data);
-        localStorage.setItem("jwt", data);
-        console.log(formData.username);
-        router.push(`/dashboard/${formData.username}`);
+      .then((response) => {
+        if (response.status === 200) return response.text();
+        else if (response.status === 401 || response.status === 403) {
+          setErrorMsg("Invalid username or password");
+        } else {
+          setErrorMsg(
+            "Something went wrong, try again later or reach out to shalihinsgp@gmail.com"
+          );
+        }
+      })
+      .then((data: any) => {
+        const jwtToken = data;
+        if (jwtToken) {
+          localStorage.setItem("jwt", data);
+          router.push(`/dashboard/${formData.username}`);
+        }
       });
   }
 
@@ -41,7 +53,7 @@ const Login = () => {
   }
 
   return (
-    <main>
+    <main className="flex min-h-screen flex-col items-center justify-start p-24">
       <div>
         <label htmlFor="username">Username</label>
         <input
@@ -74,7 +86,9 @@ const Login = () => {
           Login
         </button>
       </div>
-      <h1>token: {token}</h1>
+      <div>
+        {errorMsg ? <div className="text-red-400">{errorMsg}</div> : <></>}
+      </div>
     </main>
   );
 };
