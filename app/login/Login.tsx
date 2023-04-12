@@ -38,7 +38,7 @@ const Login = () => {
         const jwtToken = data;
         if (jwtToken) {
           localStorage.setItem("jwt", data);
-          router.push(`/dashboard/${formData.username}`);
+          router.push(`${formData.username}`);
         }
       });
   }
