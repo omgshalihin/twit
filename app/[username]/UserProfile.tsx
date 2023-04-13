@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import useSWR from "swr";
 
@@ -11,6 +12,7 @@ type UserData = {
 };
 
 const UserProfile = ({ username }: any) => {
+  const router = useRouter();
   const [userData, setuserData] = useState<UserData>();
   const jwt = localStorage.getItem("jwt");
 
@@ -19,16 +21,22 @@ const UserProfile = ({ username }: any) => {
       headers: { Authorization: `Bearer ${jwt}` },
       mode: "cors",
     })
-      .then((res) => res.json())
+      .then((response) => {
+        if (response.status === 200) return response.json();
+        else if (response.status === 403) {
+          router.push("/login");
+        }
+      })
       .then((data) => setuserData(data));
   };
 
-  useSWR(
+  const { data, error, isLoading } = useSWR(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/${username}`,
     fetcher
   );
 
   if (!userData) return <div>loading...</div>;
+  // if (error) return <div>failed to load</div>;
 
   return (
     <div>

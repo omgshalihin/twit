@@ -4,8 +4,11 @@ import React, { useState } from "react";
 import useSWR from "swr";
 import { Alert, Dropdown, Tabs } from "flowbite-react";
 import TweetsList from "./TweetsList";
+import { useRouter } from "next/navigation";
+import RepliesList from "./RepliesList";
 
 const UserTweets = ({ username }: any) => {
+  const router = useRouter();
   const [userTweets, setuserTweets] = useState();
   const jwt = localStorage.getItem("jwt");
 
@@ -14,7 +17,12 @@ const UserTweets = ({ username }: any) => {
       headers: { Authorization: `Bearer ${jwt}` },
       mode: "cors",
     })
-      .then((res) => res.json())
+      .then((response) => {
+        if (response.status === 200) return response.json();
+        else if (response.status === 403) {
+          router.push("/login");
+        }
+      })
       .then((data) => setuserTweets(data));
   };
 
@@ -24,14 +32,16 @@ const UserTweets = ({ username }: any) => {
   );
 
   if (!userTweets) return <div>loading...</div>;
-  console.log(userTweets);
+  // console.log(userTweets);
   return (
     <div>
       <Tabs.Group aria-label="Tabs with underline" style="underline">
         <Tabs.Item active={true} title="Tweets">
           <TweetsList userTweets={userTweets} />
         </Tabs.Item>
-        <Tabs.Item title="Replies">Replies content</Tabs.Item>
+        <Tabs.Item title="Replies">
+          <RepliesList username={username} />
+        </Tabs.Item>
       </Tabs.Group>
     </div>
   );

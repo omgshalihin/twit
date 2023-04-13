@@ -1,38 +1,60 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Navbar } from "flowbite-react";
 import clsx from "clsx";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { LayoutGroup, motion } from "framer-motion";
+import useSWR from "swr";
 
-const navItems = {
-  "/": {
-    name: "home",
-  },
-  "/login": {
-    name: "login",
-  },
-  //   "/projects": {
-  //     name: "projects",
-  //   },
-  //   "/guestbook": {
-  //     name: "guestbook",
-  //   },
-};
+// @ts-expect-error
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 const navbar = () => {
   let pathname = usePathname() || "/";
   if (pathname.includes("/projects/")) {
     pathname = "/projects";
   }
+
+  const jwt = localStorage.getItem("jwt");
+  const { data, error, isLoading } = useSWR(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/authenticate/validate?token=${jwt}`,
+    fetcher
+  );
+  console.log(data);
+
+  const [isTokenValid, setIsTokenValid] = useState<boolean>();
+  const navItems = {
+    "/": {
+      name: "home",
+    },
+    "/login": {
+      name: data ? "logout" : "login",
+    },
+    //   "/projects": {
+    //     name: "projects",
+    //   },
+    //   "/guestbook": {
+    //     name: "guestbook",
+    //   },
+  };
+
+  function handleLogout(e: any): void {
+    const logoutString = e.target.innerText;
+    if (logoutString === "logout") {
+      localStorage.removeItem("jwt");
+    }
+  }
+
   return (
     <div className="flex flex-row md:flex-row space-x-0 pr-10 mb-2 mt-2 md:mt-0">
       {Object.entries(navItems).map(([path, { name }]) => {
         const isActive = path === pathname;
+
         return (
           <Link
+            onClick={(e) => handleLogout(e)}
             key={path}
             href={path}
             className={clsx(

@@ -15,11 +15,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="flex flex-row">
-          {/* <div className="col-span-1">
-            <SideBar />
-          </div> */}
-        </div>
         <NavBar />
         {children}
       </body>

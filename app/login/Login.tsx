@@ -82,7 +82,7 @@ const Login = () => {
             required={true}
           />
         </div>
-        <Button type="button" onClick={() => jwtTokenHandler()}>
+        <Button type="submit" onClick={() => jwtTokenHandler()}>
           Register new account
         </Button>
         <div>
