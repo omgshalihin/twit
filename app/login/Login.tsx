@@ -1,9 +1,10 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Label, TextInput, Button } from "flowbite-react";
+import { Label, TextInput, Button, Toast } from "flowbite-react";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
+import { HiX } from "react-icons/hi";
 
 const Login = () => {
   const [signUpStatus, setSignUpStatus] = useState<boolean>(false);
@@ -216,9 +217,28 @@ const Login = () => {
             }
           />
         </div>
-        <Button type="submit" onClick={() => jwtTokenHandler()}>
+        <Button
+          type="submit"
+          onClick={() => {
+            setErrorMsg("");
+            jwtTokenHandler();
+          }}
+        >
           LOG IN
         </Button>
+        <div>
+          {errorMsg ? (
+            <Toast>
+              <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200">
+                <HiX className="h-5 w-5" />
+              </div>
+              <div className="ml-3 text-sm font-normal">{errorMsg}</div>
+              <Toast.Toggle />
+            </Toast>
+          ) : (
+            <></>
+          )}
+        </div>
         <span>----------</span>
         <div className="flex flex-col gap-4 mt-6">
           <p>Don't have an account?</p>
@@ -296,10 +316,6 @@ const Login = () => {
               <></>
             )}
           </div>
-        </div>
-
-        <div>
-          {errorMsg ? <div className="text-red-400">{errorMsg}</div> : <></>}
         </div>
       </div>
     </main>
