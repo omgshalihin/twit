@@ -32,7 +32,7 @@ const UserTweets = ({ username }: any) => {
   );
 
   if (!userTweets) return <div>loading...</div>;
-  // console.log(userTweets);
+
   return (
     <div>
       <Tabs.Group aria-label="Tabs with underline" style="underline">

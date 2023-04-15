@@ -22,7 +22,6 @@ const navbar = () => {
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/authenticate/validate?token=${jwt}`,
     fetcher
   );
-  console.log(data);
 
   const [isTokenValid, setIsTokenValid] = useState<boolean>();
   const navItems = {
