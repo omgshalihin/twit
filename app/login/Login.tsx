@@ -1,8 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { cookies } from "next/dist/client/components/headers";
 import { Label, TextInput, Button } from "flowbite-react";
+import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -53,38 +54,74 @@ const Login = () => {
     }));
   }
 
+  function signUpHandler(): void {
+    throw new Error("Function not implemented.");
+  }
   return (
     <main className="flex min-h-screen flex-col items-center justify-start p-24">
       <div className="flex flex-col gap-4">
+        <Button>
+          <FaGithub className="mr-2 h-5 w-5" />
+          CONTINUE WITH GITHUB
+        </Button>
+        <Button>
+          <FcGoogle className="mr-2 h-5 w-5" />
+          CONTINUE WITH GOOGLE
+        </Button>
+        <span>----- OR -----</span>
         <div>
           <div className="mb-2 block">
-            <Label htmlFor="username" color="white" value="Your username" />
+            <Label htmlFor="username" color="white" value="Username" />
           </div>
           <TextInput
             type="text"
             id="username"
             name="username"
-            placeholder="username"
+            placeholder="Username"
             onChange={(e) => handleInput(e)}
             required={true}
+            color={!formData.username ? "failure" : "gray"}
+            helperText={
+              !formData.username ? (
+                <React.Fragment>Please enter Twit username.</React.Fragment>
+              ) : (
+                <></>
+              )
+            }
           />
         </div>
         <div>
           <div className="mb-2 block">
-            <Label htmlFor="password" color="white" value="Your password" />
+            <Label htmlFor="password" color="white" value="Password" />
           </div>
           <TextInput
             type="password"
             id="password"
             name="password"
-            placeholder="password"
+            placeholder="Password"
             onChange={(e) => handleInput(e)}
             required={true}
+            color={!formData.password ? "failure" : "gray"}
+            helperText={
+              !formData.password ? (
+                <React.Fragment>Please enter your password.</React.Fragment>
+              ) : (
+                <></>
+              )
+            }
           />
         </div>
         <Button type="submit" onClick={() => jwtTokenHandler()}>
-          Register new account
+          LOG IN
         </Button>
+        <span>----------</span>
+        <div className="flex flex-col gap-4 mt-6">
+          <p>Don't have an account?</p>
+          <Button type="submit" onClick={() => signUpHandler()}>
+            SIGN UP FOR TWIT
+          </Button>
+        </div>
+
         <div>
           {errorMsg ? <div className="text-red-400">{errorMsg}</div> : <></>}
         </div>
