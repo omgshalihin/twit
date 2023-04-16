@@ -69,7 +69,6 @@ const Login = () => {
       [fieldName]: fieldValue,
     }));
     if (fieldName === "username") {
-      // localStorage.setItem("username", fieldValue);
       setUsername(fieldValue);
     }
   }
@@ -137,7 +136,6 @@ const Login = () => {
       .then((data: any) => {
         const jwtToken = data;
         if (jwtToken) {
-          localStorage.setItem("jwt", data);
           createNewUser(jwtToken);
         }
       });
