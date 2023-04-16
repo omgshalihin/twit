@@ -17,8 +17,14 @@ const navbar = () => {
     pathname = "/projects";
   }
 
-  const jwt = localStorage.getItem("jwt");
-  const username = localStorage.getItem("username");
+  let jwt: any = "";
+  let username: any = "";
+
+  if (typeof window !== "undefined") {
+    jwt = localStorage.getItem("jwt");
+    username = localStorage.getItem("username");
+  }
+
   const { data, error, isLoading } = useSWR(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/authenticate/validate?token=${jwt}`,
     fetcher
@@ -28,9 +34,9 @@ const navbar = () => {
     "/": {
       name: "home",
     },
-    [`/${username}`]: {
-      name: username ? "Profile" : "Profile",
-    },
+    // [`/${username}`]: {
+    //   name: username ? "Profile" : "Profile",
+    // },
     "/login": {
       name: data ? "logout" : "login",
     },

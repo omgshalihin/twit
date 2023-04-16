@@ -10,7 +10,11 @@ import RepliesList from "./RepliesList";
 const UserTweets = ({ username }: any) => {
   const router = useRouter();
   const [userTweets, setuserTweets] = useState();
-  const jwt = localStorage.getItem("jwt");
+  let jwt: any = "";
+
+  if (typeof window !== "undefined") {
+    jwt = localStorage.getItem("jwt");
+  }
 
   const fetcher = (url: RequestInfo | URL) => {
     fetch(url, {

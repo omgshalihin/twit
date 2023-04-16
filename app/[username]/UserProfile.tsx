@@ -14,7 +14,12 @@ type UserData = {
 const UserProfile = ({ username }: any) => {
   const router = useRouter();
   const [userData, setuserData] = useState<UserData>();
-  const jwt = localStorage.getItem("jwt");
+
+  let jwt: any = "";
+
+  if (typeof window !== "undefined") {
+    jwt = localStorage.getItem("jwt");
+  }
 
   const fetcher = (url: RequestInfo | URL) => {
     fetch(url, {
