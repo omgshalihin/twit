@@ -18,31 +18,29 @@ const navbar = () => {
   }
 
   const jwt = localStorage.getItem("jwt");
+  const username = localStorage.getItem("username");
   const { data, error, isLoading } = useSWR(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/authenticate/validate?token=${jwt}`,
     fetcher
   );
 
-  const [isTokenValid, setIsTokenValid] = useState<boolean>();
   const navItems = {
     "/": {
       name: "home",
     },
+    [`/${username}`]: {
+      name: username ? "Profile" : "Profile",
+    },
     "/login": {
       name: data ? "logout" : "login",
     },
-    //   "/projects": {
-    //     name: "projects",
-    //   },
-    //   "/guestbook": {
-    //     name: "guestbook",
-    //   },
   };
 
   function handleLogout(e: any): void {
     const logoutString = e.target.innerText;
     if (logoutString === "logout") {
       localStorage.removeItem("jwt");
+      localStorage.removeItem("username");
     }
   }
 
@@ -64,7 +62,7 @@ const navbar = () => {
               }
             )}
           >
-            <span className="relative py-[5px] px-[10px]">
+            <span className="relative py-[5px] px-[10px] text-gray-500">
               {name}
               {path === pathname ? (
                 <motion.div

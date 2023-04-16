@@ -7,6 +7,7 @@ import { FaGithub } from "react-icons/fa";
 import { HiX } from "react-icons/hi";
 
 const Login = () => {
+  const [username, setUsername] = useState("");
   const [signUpStatus, setSignUpStatus] = useState<boolean>(false);
   const [signupSuccessMessage, setSignupSuccessMessage] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
@@ -53,7 +54,8 @@ const Login = () => {
       .then((data: any) => {
         const jwtToken = data;
         if (jwtToken) {
-          localStorage.setItem("jwt", data);
+          localStorage.setItem("jwt", jwtToken);
+          localStorage.setItem("username", username);
           router.push(`${formData.username}`);
         }
       });
@@ -66,6 +68,10 @@ const Login = () => {
       ...prevState,
       [fieldName]: fieldValue,
     }));
+    if (fieldName === "username") {
+      // localStorage.setItem("username", fieldValue);
+      setUsername(fieldValue);
+    }
   }
 
   function handleSignupInput(e: React.ChangeEvent<HTMLInputElement>): void {
