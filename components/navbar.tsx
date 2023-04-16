@@ -37,10 +37,16 @@ const navbar = () => {
     // [`/${username}`]: {
     //   name: username ? "Profile" : "Profile",
     // },
+    [`/profile/${username}`]: {
+      name: username ? "My Profile" : "My Profile",
+    },
+
     "/login": {
       name: data ? "logout" : "login",
     },
   };
+
+  console.log(pathname);
 
   function handleLogout(e: any): void {
     const logoutString = e.target.innerText;

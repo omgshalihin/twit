@@ -56,7 +56,7 @@ const Login = () => {
         if (jwtToken) {
           localStorage.setItem("jwt", jwtToken);
           localStorage.setItem("username", username);
-          router.push(`${formData.username}`);
+          router.push(`profile/${formData.username}`);
         }
       });
   }
